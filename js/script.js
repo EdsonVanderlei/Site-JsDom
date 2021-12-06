@@ -61,19 +61,74 @@ function scroll() {
   }
 }
 scroll();
+
 const show = document.querySelectorAll(".js-content");
+console.log(show);
 const height = window.innerHeight * 0.6;
 
-function scrollanima() {
-  show.forEach((item) => {
-    const showtop = item.getBoundingClientRect().top;
-    const top = showtop - height < 0;
-    if (top) {
-      item.classList.add("active");
-    } else {
-      item.classList.remove("active");
-    }
+function InitScroll() {
+  function scrollanima() {
+    show.forEach((item) => {
+      const showtop = item.getBoundingClientRect().top;
+      const top = showtop - height < 0;
+      if (top) {
+        item.classList.add("active");
+      } else {
+        item.classList.remove("active");
+      }
+    });
+  }
+
+  window.addEventListener("scroll", scrollanima);
+}
+InitScroll();
+
+function lap() {
+  function laptop(item) {
+    this.element = function () {
+      return document.querySelector(item);
+    };
+
+    this.active = function () {
+      this.element().classList.add("active");
+      this.element().nextElementSibling.classList.add("active");
+    };
+    this.desactive = function () {
+      this.element().classList.remove("active");
+      this.element().previousElementSibling.classList.remove("active");
+    };
+  }
+
+  const lap1 = new laptop("#lap1");
+  const lap2 = new laptop("#lap2");
+
+  lap1.element().addEventListener("click", () => {
+    lap1.active();
+  });
+  lap2.element().addEventListener("click", () => {
+    lap2.desactive();
+  });
+}
+lap();
+
+function write(elemento, velocidade) {
+  const writer = document.querySelector(elemento);
+  const arraywrite = writer.innerHTML.split("");
+  console.log(arraywrite);
+  writer.innerHTML = "";
+
+  arraywrite.forEach((letter, index) => {
+    setTimeout(() => {
+      writer.innerHTML += letter;
+    }, velocidade * index);
   });
 }
 
-window.addEventListener("scroll", scrollanima);
+write("#by", 500);
+write(".jsabout div.active p", 25);
+const touch = document.querySelectorAll(".tab-list li");
+touch.forEach((item) => {
+  item.addEventListener("click", () => {
+    write(".jsabout div.active p", 25);
+  });
+});
